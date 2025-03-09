@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Disease Prediction</title>
+    <link rel="stylesheet" href="../static/input.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins';
+            background: linear-gradient(to bottom right, #0F172A, #233a94);
+            overflow-x: hidden;
+        }
+
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .navbar {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: black;
+            font-size: 24px;
+            margin-left: 27px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .menu {
+            width: 690px;
+            list-style: none;
+            padding: 0;
+            display: flex;
+            margin-left: 800px;
+
+        }
+
+        .menu li {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu li a:hover {
+            color: gray;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        .hero button {
+            background-color: #007bff;
+            border: none;
+            outline: none;
+            padding: 15px 30px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .hero button:hover {
+            background-color: #0056b3;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        .card {
+            padding: 30px;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card h1 {
+            font-size: 24px;
+            color: #cecece;
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            font-size: 16px;
+            color: #cdcdcd;
+        }
+
+        .slider {
+            position: relative;
+            overflow: hidden;
+            margin-top: 50px;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            min-width: 100%;
+            flex: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: auto;
+        }
+
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .slide-content h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slide-content p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .mySlides {
+            display: none
+        }
+
+        img {
+            vertical-align: middle;
+        }
+
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .text {
+            color: #f2f2f2;
+            font-size: 15px;
+            padding: 8px 12px;
+            position: absolute;
+            bottom: 8px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active,
+        .dot:hover {
+            background-color: #717171;
+        }
+
+        .line {
+            width: 96%;
+            background-color: rgb(221, 221, 221);
+            height: .5px;
+            margin-left: 25px;
+        }
+
+        .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        .accordion {
+            background-color: transparent;
+            color: #e7e3e3;
+            cursor: pointer;
+            padding: 18px;
+            width: 96%;
+            border: none;
+            text-align: left;
+            outline: none;
+            transition: 0.4s;
+        }
+
+        .panel {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: .4
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        @media only screen and (max-width: 300px) {
+
+            .prev,
+            .next,
+            .text {
+                font-size: 11px
+            }
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .loader {
+            position: relative;
+            overflow: hidden;
+            border-right: 3px solid;
+            width: 0px;
+            animation: typewriter 2s steps(10) infinite alternate, blink 0.5s steps(10) infinite;
+        }
+
+        .loader-text {
+            font-size: 40px;
+            font-weight: 700;
+            background: linear-gradient(to right, #159957, #155799);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer {
+            color: rgb(143, 143, 143);
+            padding: 20px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        .footer-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-menu li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        .footer-menu li:last-child {
+            margin-right: 0;
+        }
+
+        .footer-menu li a {
+            color: rgb(157, 156, 156);
+            text-decoration: none;
+        }
+
+        .Btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition-duration: 0.4s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to right, #3498db, #e74c3c);
+        }
+
+        .sign {
+            width: 100%;
+            transition-duration: 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sign svg {
+            width: 17px;
+        }
+
+        .sign svg path {
+            fill: white;
+        }
+
+        .text {
+            position: absolute;
+            right: 0%;
+            width: 0%;
+            opacity: 0;
+            color: #ecf0f1;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition-duration: 0.4s;
+        }
+
+        .Btn:hover {
+            width: 150px;
+            border-radius: 20px;
+            transition-duration: 0.4s;
+            background: linear-gradient(to right, #3498db, #e74c3c);
+        }
+
+        .Btn:hover .sign {
+            width: 30%;
+            transition-duration: 0.4s;
+            padding-left: 12px;
+        }
+
+        .Btn:hover .text {
+            opacity: 1;
+            width: 70%;
+            transition-duration: 0.4s;
+            padding-right: 10px;
+        }
+
+        .Btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .loading svg polyline {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .loading svg polyline#back {
+            fill: none;
+        }
+
+        .loading svg polyline#front {
+            fill: none;
+            stroke: #FF0000;
+            stroke-dasharray: 48, 144;
+            stroke-dashoffset: 192;
+            animation: dash_682 1.4s linear infinite;
+        }
+
+        @keyframes dash_682 {
+            72.5% {
+                opacity: 0;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 17px;
+            padding: 0.8em 1.3em 0.8em 0.9em;
+            color: white;
+            background: #ad5389;
+            background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+            border: none;
+            letter-spacing: 0.05em;
+            border-radius: 16px;
+        }
+
+        .btn svg {
+            margin-right: 3px;
+            transform: rotate(30deg);
+            transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .btn span {
+            transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .btn:hover svg {
+            transform: translateX(5px) rotate(90deg);
+        }
+
+        .btn:hover span {
+            transform: translateX(7px);
+        }
+
+        .phonecard {
+            width: 210px;
+            height: 400px;
+            background: black;
+            border-radius: 35px;
+            border: 2px solid rgb(40, 40, 40);
+            padding: 7px;
+            position: relative;
+            box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.486);
+        }
+
+        .card-int {
+            background-image: linear-gradient(to right bottom, #ff0000, #ff0045, #ff0078, #ea00aa, #b81cd7, #8a3ad6, #5746cf, #004ac2, #003d94, #002e66, #001d3a, #020812);
+            background-size: 200% 200%;
+            background-position: 0% 0%;
+            height: 100%;
+            border-radius: 25px;
+            transition: all 0.6s ease-out;
+            overflow: hidden;
+        }
+
+        .phonecard:hover .card-int {
+            background-position: 100% 100%;
+        }
+
+        .top {
+            position: absolute;
+            top: 0px;
+            right: 50%;
+            transform: translate(50%, 0%);
+            width: 35%;
+            height: 18px;
+            background-color: black;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .speaker {
+            position: absolute;
+            top: 2px;
+            right: 50%;
+            transform: translate(50%, 0%);
+            width: 40%;
+            height: 2px;
+            border-radius: 2px;
+            background-color: rgb(20, 20, 20);
+        }
+
+        .camera {
+            position: absolute;
+            top: 6px;
+            right: 84%;
+            transform: translate(50%, 0%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.048);
+        }
+
+        .int {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            top: 50%;
+            right: 50%;
+            transform: translate(50%, -50%);
+            background-color: rgba(0, 0, 255, 0.212);
+        }
+
+        .btn1,
+        .btn2,
+        .btn3,
+        .btn4 {
+            position: absolute;
+            width: 2px;
+        }
+
+        .btn1,
+        .btn2,
+        .btn3 {
+            height: 45px;
+            top: 30%;
+            right: -4px;
+            background-image: linear-gradient(to right, #111111, #222222, #333333, #464646, #595959);
+        }
+
+        .btn2,
+        .btn3 {
+            transform: scale(-1);
+            left: -4px;
+        }
+
+        .btn2,
+        .btn3 {
+            transform: scale(-1);
+            height: 30px;
+        }
+
+        .btn2 {
+            top: 26%
+        }
+
+        .btn3 {
+            top: 36%
+        }
+
+        .hello {
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            line-height: 35px;
+            height: 100%;
+            transition: 0.5s ease-in-out;
+        }
+
+        .hidden {
+            display: block;
+            opacity: 0;
+            font-size: 15px;
+            transition: all 0.3s ease-in;
+        }
+
+        .phonecard:hover .hidden {
+            opacity: 1;
+        }
+
+        .phonecard:hover .hello {
+            transform: translateY(-15px);
+        }
+
+        .shine {
+            position: relative;
+            font-size: 1em;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.316);
+            background: #222 -webkit-gradient(linear,
+                    left top,
+                    right top,
+                    from(#222),
+                    to(#222),
+                    color-stop(0.5, #fff)) 0 0 no-repeat;
+            background-image: -webkit-linear-gradient(-40deg,
+                    transparent 0%,
+                    transparent 40%,
+                    #fff 50%,
+                    transparent 60%,
+                    transparent 100%);
+            -webkit-background-clip: text;
+            -webkit-background-size: 50px;
+            -webkit-animation: zezzz;
+            -webkit-animation-duration: 5s;
+            -webkit-animation-iteration-count: infinite;
+        }
+
+        @-webkit-keyframes zezzz {
+
+            0%,
+            10% {
+                background-position: -200px;
+            }
+
+            20% {
+                background-position: top left;
+            }
+
+            100% {
+                background-position: 200px;
+            }
+        }
+
+
+        @keyframes blink {
+            0% {
+                border-right-color: rgba(255, 255, 255, .75);
+                ;
+            }
+
+            100% {
+                border-right-color: transparent;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="shine">DISEASE DETECTION</div>
+        </a>
+        <ul class="menu">
+            <li>
+                <div class="loading">
+                    <svg height="48px" width="64px" style="margin-left: -20px;">
+                        <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                        </polyline>
+                        <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                        </polyline>
+                    </svg>
+                </div>
+            </li>
+            <li><a href="{{ url_for('index') }}">HOME</a></li>
+            <li><a href="{{ url_for('parkinsons') }}">Parkinson's</a></li>
+            <li><a href="{{ url_for('diabetes') }}">Diabetes</a></li>
+            <li><a href="{{ url_for('heart') }}">Heart</a></li>
+            <li><a href="{{ url_for('liver') }}">Liver</a></li>
+            <li><a href="{{ url_for('kidney') }}">Kidney</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('profile') }}">{{s}}</a></li>
+            <li class="logout"><a href="{{ url_for('logout') }}"><button class="Btn">
+                        <div class="sign">
+                            <svg viewBox="0 0 512 512">
+                                <path
+                                    d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <div class="text">Logout</div>
+                    </button></a></li>
+        </ul>
+    </nav>
+    <div class="line"></div>
+    <div class="hero">
+        <center>
+            <div class="phonecard">
+                <div class="btn1"></div>
+                <div class="btn2"></div>
+                <div class="btn3"></div>
+                <div class="btn4"></div>
+                <div class="card-int">
+                    <div class="hello">Hello
+                        <span class="hidden">Let's get started with Disease Detection</span>
+                    </div>
+                </div>
+                <div class="top">
+                    <div class="camera">
+                        <div class="int"></div>
+                    </div>
+                    <div class="speaker"></div>
+                </div>
+
+            </div>
+        </center>
+        <!-- <h1>Hello! Let's get started with Disease Detection</h1> -->
+        <p style="color:white">Introducing a machine learning-powered web-based model for multi-disease detection, including diabetes, heart disease, Parkinson's, and liver diseases. Leveraging algorithms, this innovative platform analyzes medical data to provide early detection and personalized risk assessment for these prevalent conditions. Seamlessly integrating with existing healthcare systems, it offers users accessible and timely insights, aiding in proactive disease management and improving patient outcomes. With its user-friendly interface and robust predictive capabilities, this model represents a transformative approach to preventive healthcare, empowering individuals to take control of their well-being and leading to more efficient healthcare delivery.</p>
+        <center>
+            <button class="btn">
+                <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                        d="M5 13c0-5.088 2.903-9.436 7-11.182C16.097 3.564 19 7.912 19 13c0 .823-.076 1.626-.22 2.403l1.94 1.832a.5.5 0 0 1 .095.603l-2.495 4.575a.5.5 0 0 1-.793.114l-2.234-2.234a1 1 0 0 0-.707-.293H9.414a1 1 0 0 0-.707.293l-2.234 2.234a.5.5 0 0 1-.793-.114l-2.495-4.575a.5.5 0 0 1 .095-.603l1.94-1.832C5.077 14.626 5 13.823 5 13zm1.476 6.696l.817-.817A3 3 0 0 1 9.414 18h5.172a3 3 0 0 1 2.121.879l.817.817.982-1.8-1.1-1.04a2 2 0 0 1-.593-1.82c.124-.664.187-1.345.187-2.036 0-3.87-1.995-7.3-5-8.96C8.995 5.7 7 9.13 7 13c0 .691.063 1.372.187 2.037a2 2 0 0 1-.593 1.82l-1.1 1.039.982 1.8zM12 13a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
+                        fill="currentColor"></path>
+                </svg>
+
+                <span>GET STARTED</span>
+            </button>
+        </center>
+
+    </div>
+
+    <div class="slideshow-container">
+
+        <div class="mySlides fade">
+            <img src="static/original.jpg" style="width:100%">
+        </div>
+
+        <div class="mySlides fade">
+            <img src="static/image2.jpg" style="width:100%">
+        </div>
+
+        <div class="mySlides fade">
+            <img src="static/image3.jpg" style="width:100%">
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+
+    </div>
+    <br>
+
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <h1>Parkinson's Diesease</h1>
+            <p>Parkinson's disease is a neurodegenerative disorder that affects movement. It occurs when nerve cells in the brain that produce dopamine, a chemical messenger responsible for smooth and coordinated muscle movements, become impaired or die. Symptoms typically develop gradually and may include tremors, stiffness, slowness of movement, and impaired balance and coordination. While the exact cause of Parkinson's disease is unknown, both genetic and environmental factors are believed to play a role. There is currently no cure for Parkinson's disease, but treatments such as medications, physical therapy, and deep brain stimulation can help manage symptoms and improve quality of life for affected individuals. Early detection and intervention are crucial for optimizing treatment outcomes and slowing disease progression. Ongoing research efforts aim to better understand the underlying mechanisms of Parkinson's disease and develop more effective therapies.</p>
+        </div>
+        <div class="card">
+            <h1>Diabetes</h1>
+            <p>Diabetes is a chronic condition that affects how your body regulates blood sugar (glucose). There are two main types: type 1 and type 2. In type 1 diabetes, the immune system mistakenly attacks and destroys the insulin-producing cells in the pancreas, leading to a lack of insulin. Type 2 diabetes occurs when the body becomes resistant to insulin or doesn't produce enough insulin to maintain normal glucose levels. Common symptoms include increased thirst, frequent urination, unexplained weight loss, fatigue, and blurred vision. If left untreated, diabetes can lead to serious complications such as heart disease, stroke, kidney damage, nerve damage, and vision loss. Management typically involves lifestyle changes, including a healthy diet, regular exercise, monitoring blood sugar levels, and medication or insulin therapy as prescribed by a healthcare provider. Regular medical check-ups are crucial for monitoring and managing diabetes effectively.</p>
+        </div>
+        <div class="card">
+            <h1>Heart Diesease</h1>
+            <p>Heart disease, also known as cardiovascular disease, encompasses various conditions affecting the heart and blood vessels, including coronary artery disease, heart rhythm problems (arrhythmias), and heart defects present at birth (congenital heart defects). It's often associated with risk factors such as high blood pressure, high cholesterol levels, smoking, obesity, and diabetes. Symptoms may vary depending on the specific condition but commonly include chest pain, shortness of breath, fatigue, and irregular heartbeat. Early detection through screenings and lifestyle modifications such as a balanced diet, regular exercise, and smoking cessation can reduce the risk of heart disease. Treatment options range from medications and medical procedures to lifestyle changes and cardiac rehabilitation programs aimed at managing symptoms and preventing complications like heart attacks and strokes.
+            </p>
+        </div>
+        <div class="card">
+            <h1>Liver</h1>
+            <p>Liver disease refers to any condition that affects the liver's structure or function, impairing its ability to perform vital tasks such as detoxification, metabolism, and nutrient storage. There are various types of liver diseases, including hepatitis, fatty liver disease, cirrhosis, and liver cancer. Symptoms of liver disease may vary widely but can include jaundice (yellowing of the skin and eyes), abdominal pain and swelling, fatigue, nausea, and loss of appetite. Causes of liver disease range from viral infections (such as hepatitis viruses) and excessive alcohol consumption to autoimmune conditions, genetic factors, and metabolic disorders. Early diagnosis and treatment are crucial to prevent complications and manage liver disease effectively. Treatment options may include lifestyle changes, medication, dietary modifications, and, in severe cases, liver transplantation. It's essential to seek medical advice if experiencing symptoms or risk factors associated with liver disease.</p>
+        </div>
+    </div>
+
+    <center>
+        <div class="accordion">
+            <section class="faq-section">
+                <h2>FAQs About Diabetic Retinopathy</h2>
+
+                <button class="accordion">What is diabetic retinopathy?</button>
+                <div class="panel">
+                    <p>Diabetic retinopathy is a diabetes complication that affects the eyes. It's caused by damage to
+                        the blood vessels of the light-sensitive tissue at the back of the eye (retina).</p>
+                </div>
+
+                <button class="accordion">What are the symptoms of diabetic retinopathy?</button>
+                <div class="panel">
+                    <p>Some common symptoms of diabetic retinopathy include blurred vision, fluctuating vision,
+                        impaired color vision, and vision loss.</p>
+                </div>
+
+                <button class="accordion">How is diabetic retinopathy diagnosed?</button>
+                <div class="panel">
+                    <p>Diabetic retinopathy is diagnosed through a comprehensive eye exam that may include visual
+                        acuity testing, dilated eye exam, tonometry, and imaging tests like optical coherence
+                        tomography (OCT).</p>
+                </div>
+            </section>
+        </div>
+    </center>
+
+    <div class="line"></div>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Disease Detection. All rights reserved.</p>
+                <ul class="footer-menu">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".accordion-header").click(function () {
+                $(this).parent().toggleClass("active");
+            });
+        });
+
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+        setInterval(function () { plusSlides(1); }, 3000);
+
+    </script>
+
+</body>
+
+</html>

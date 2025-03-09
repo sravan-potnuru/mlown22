@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Disease Prediction</title>
+    <link rel="stylesheet" href="../static/input.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0ef;
+            font-family: Arial, sans-serif;
+        }
+
+        
+
+        h2 {
+            text-align: center;
+            margin-top: 50px;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a class="nav-link" id="parkinson-link" href="{{ url_for('index') }}">HOME</a></li>
+            <li><a class="nav-link" id="parkinson-link" href="{{ url_for('parkinsons') }}">Parkinson's</a></li>
+           <li> <a class="nav-link" id="DIABETES-link" href="{{ url_for('diabetes') }}">Diabete's</a></li>
+           <li> <a class="nav-link" id="DIABETES-link" href="{{ url_for('heart') }}">HEART</a></li>
+           <li> <a class="nav-link" id="register-link" href="{{ url_for('register') }}">REGISTER</a></li>
+           <li> <a class="nav-link" id="register-link" href="{{ url_for('login') }}">LOGIN</a></li>
+           <li> <a class="nav-link" id="register-link" href="{{ url_for('logout') }}">LOGout</a></li>
+        <li><a href="{{url_for('/profile')}}" style="color:white;margin-left:700px">{{s}}</a></li>
+
+        </ul>
+    </nav>
+    <h1>Heart Disease Prediction</h1>
+    
+    <form action="/heart" method="post">
+        <label for="age">Age:</label>
+        <input type="text" name="age" required><br><br>
+
+        <label for="sex">Sex:</label>
+        <select name="sex" required>
+            <option value="0">Female</option>
+            <option value="1">Male</option>
+        </select><br><br>
+
+        <label for="cp">Chest Pain Type:</label>
+        <select name="cp" required>
+            <option value="0">Typical Angina</option>
+            <option value="1">Atypical Angina</option>
+            <option value="2">Non-Anginal Pain</option>
+            <option value="3">Asymptomatic</option>
+        </select><br><br>
+
+        <label for="trestbps">Resting Blood Pressure (mm Hg):</label>
+        <input type="text" name="trestbps" required><br><br>
+
+        <label for="chol">Serum Cholesterol (mg/dl):</label>
+        <input type="text" name="chol" required><br><br>
+
+        <label for="fbs">Fasting Blood Sugar &gt; 120 mg/dl:</label>
+        <select name="fbs" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="restecg">Resting Electrocardiographic Results:</label>
+        <select name="restecg" required>
+            <option value="0">Normal</option>
+            <option value="1">ST-T Wave Abnormality</option>
+            <option value="2">Left Ventricular Hypertrophy</option>
+        </select><br><br>
+
+        <label for="thalach">Maximum Heart Rate Achieved:</label>
+        <input type="text" name="thalach" required><br><br>
+
+        <label for="exang">Exercise Induced Angina:</label>
+        <select name="exang" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br><br>
+
+        <label for="oldpeak">Oldpeak:</label>
+        <input type="text" name="oldpeak" required><br><br>
+
+        <label for="slope">Slope of the Peak Exercise ST Segment:</label>
+        <select name="slope" required>
+            <option value="0">Upsloping</option>
+            <option value="1">Flat</option>
+            <option value="2">Downsloping</option>
+        </select><br><br>
+
+        <label for="ca">Number of Major Vessels Colored by Fluoroscopy:</label>
+        <select name="ca" required>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select><br><br>
+
+        <label for="thal">Thalassemia:</label>
+        <select name="thal" required>
+            <option value="0">Normal</option>
+            <option value="1">Fixed Defect</option>
+            <option value="2">Reversible Defect</option>
+        </select><br><br>
+
+        <button type="submit">Predict</button>
+    </form>
+{{final_result}}
+    {% if final_result is defined %}
+        <div class="result">
+            {% if final_result == 0 %}
+                <p>No heart disease detected</p>
+            {% else %}
+                <p>Suffering from heart disease</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</body>
+
+</html>

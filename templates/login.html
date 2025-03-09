@@ -1,0 +1,160 @@
+//login.html
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #0F172A, #233a94);
+            margin: 0;
+            padding: 0;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0;
+            background-color: #333;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            transition: .3s;
+        }
+
+        nav ul li a:hover {
+            color: rgb(135, 135, 135);
+            transition: .3s;
+        }
+
+
+        .container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-form {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 6rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            text-align: center;
+        }
+
+        .login-form h1 {
+            margin-bottom: 30px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #333;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .login-form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 50%;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background-color: #555;
+        }
+
+        .login-form p {
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .login-form a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .login-form a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <div class="logo">Disease Detection</div>
+            <li><a href="{{ url_for('index') }}">HOME</a></li>
+            <li><a href="{{ url_for('parkinsons') }}">Parkinson's</a></li>
+            <li><a href="{{ url_for('diabetes') }}">Diabetes</a></li>
+            <li><a href="{{ url_for('heart') }}">HEART</a></li>
+            <li><a href="{{ url_for('liver') }}">LIVER</a></li>
+            <li> <a class="nav-link" id="kidney-link" href="{{ url_for('kidney') }}">KIDNEY</a></li>
+            <li><a href="{{ url_for('register') }}">REGISTER</a></li>
+            <li><a href="{{ url_for('login') }}">LOGIN</a></li>
+            <li><a href="{{ url_for('logout') }}">LOGOUT</a></li>
+            <li><a href="{{ url_for('profile') }}" style="color:white;margin-left:0px;">{{ s }}</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="login-form">
+            <h1>Login</h1>
+            <form action="{{ url_for('login') }}" method="post">
+                <div class="msg">{{ msg }}</div> 
+                <input id="username" name="username" type="text" placeholder="Enter Your Username" class="textbox"
+                    required>
+                <br><br>
+                <input id="password" name="password" type="password" placeholder="Enter Your Password" class="textbox"
+                    required>
+                <br><br>
+                <input type="submit" class="btn" value="Sign In">
+            </form>
+            <p>Don't have an account? <a href="{{ url_for('register') }}">Sign Up here</a></p>
+        </div>
+    </div>
+</body>
+
+</html>

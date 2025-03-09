@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/input.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    
+    <title>chronic kidney  Disease Detection</title>
+    <style>
+       .heading h2 {
+        color: rgb(0, 72, 255);
+        font-size: 4em;
+        position: absolute;
+        top: -50px;
+        left: 300px;
+      }
+
+      .bg-text1 {
+        background-color: rgb(0, 72, 255);
+        background-color: rgba(0, 0, 0, 0.3);
+        color: rgb(0, 72, 255);
+        font-weight: bold;
+        border: 3px solid rgb(0, 72, 255);
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(50%, -100%);
+        z-index: 2;
+        width: 25%;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        opacity: 0.7;
+        z-index: -1;
+      }
+      form{
+        display: flex;
+        flex-wrap: wrap;
+        
+      }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .navbar {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: black;
+            font-size: 24px;
+            margin-left: 27px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .menu {
+            width: 690px;
+            list-style: none;
+            padding: 0;
+            display: flex;
+            margin-left: 800px;
+
+        }
+
+        .menu li {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .menu li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu li a:hover {
+            color: gray;
+        }
+        .sign {
+            width: 100%;
+            transition-duration: 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sign svg {
+            width: 17px;
+        }
+
+        .sign svg path {
+            fill: white;
+        }
+
+        .text {
+            position: absolute;
+            right: 0%;
+            width: 0%;
+            opacity: 0;
+            color: #ecf0f1;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition-duration: 0.4s;
+        }
+
+        .Btn:hover {
+            width: 150px;
+            border-radius: 20px;
+            transition-duration: 0.4s;
+            background: linear-gradient(to right, #3498db, #e74c3c);
+        }
+
+        .Btn:hover .sign {
+            width: 30%;
+            transition-duration: 0.4s;
+            padding-left: 12px;
+        }
+
+        .Btn:hover .text {
+            opacity: 1;
+            width: 70%;
+            transition-duration: 0.4s;
+            padding-right: 10px;
+        }
+
+        .Btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+        }
+        .loading svg polyline {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .loading svg polyline#back {
+            fill: none;
+        }
+
+        .loading svg polyline#front {
+            fill: none;
+            stroke: #FF0000;
+            stroke-dasharray: 48, 144;
+            stroke-dashoffset: 192;
+            animation: dash_682 1.4s linear infinite;
+        }
+
+        @keyframes dash_682 {
+            72.5% {
+                opacity: 0;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        .shine {
+            position: relative;
+            font-size: 1em;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.316);
+            background: #222 -webkit-gradient(linear,
+                    left top,
+                    right top,
+                    from(#222),
+                    to(#222),
+                    color-stop(0.5, #fff)) 0 0 no-repeat;
+            background-image: -webkit-linear-gradient(-40deg,
+                    transparent 0%,
+                    transparent 40%,
+                    #fff 50%,
+                    transparent 60%,
+                    transparent 100%);
+            -webkit-background-clip: text;
+            -webkit-background-size: 50px;
+            -webkit-animation: zezzz;
+            -webkit-animation-duration: 5s;
+            -webkit-animation-iteration-count: infinite;
+        }
+
+        @-webkit-keyframes zezzz {
+
+            0%,
+            10% {
+                background-position: -200px;
+            }
+
+            20% {
+                background-position: top left;
+            }
+
+            100% {
+                background-position: 200px;
+            }
+        }
+
+
+        @keyframes blink {
+            0% {
+                border-right-color: rgba(255, 255, 255, .75);
+                ;
+            }
+
+            100% {
+                border-right-color: transparent;
+            }
+        }
+    </style>
+
+   
+  </head>
+  <body>
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="shine">DISEASE DETECTION</div>
+        </a>
+        <ul class="menu">
+            <li>
+                <div class="loading">
+                    <svg height="48px" width="64px" style="margin-left: -20px;">
+                        <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                        </polyline>
+                        <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                        </polyline>
+                    </svg>
+                </div>
+            </li>
+            <li><a href="{{ url_for('index') }}">HOME</a></li>
+            <li><a href="{{ url_for('parkinsons') }}">Parkinson's</a></li>
+            <li><a href="{{ url_for('diabetes') }}">Diabetes</a></li>
+            <li><a href="{{ url_for('heart') }}">Heart</a></li>
+            <li><a href="{{ url_for('liver') }}">Liver</a></li>
+            <li><a href="{{ url_for('kidney') }}">Kidney</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('profile') }}">{{s}}</a></li>
+            <li class="logout"><a href="{{ url_for('logout') }}"><button class="Btn">
+                        <div class="sign">
+                            <svg viewBox="0 0 512 512">
+                                <path
+                                    d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <div class="text">Logout</div>
+                    </button></a></li>
+        </ul>
+    </nav>
+
+    <div class="overlay"></div>
+    <section>
+      <div class="heading">
+        <h2>chronic kidney Disease Prediction</h2>
+        
+      </div>
+    </section>
+    <div class="bg-text">
+      <form action="/kidney" method="post">
+        <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="age" placeholder="age">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input  class="form-control" type="text" name="bp" placeholder="bp">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="al" placeholder="al">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="su" placeholder="su">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="rbc" placeholder="rbc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pc" placeholder="pc">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pcc" placeholder="pcc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="ba" placeholder="ba">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="bgr" placeholder="bgr">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="bu" placeholder="bu">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="sc" placeholder="sc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pot" placeholder="pot">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="wc" placeholder="wc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="htn" placeholder="htn">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="dm" placeholder="dm">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="cad" placeholder="cad">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pe" placeholder="pe">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="ane" placeholder="ane">
+              </div>
+          </div>
+          <div class="container">
+            <input type="submit" value="Submit" class="button" />
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class="bg-text1">
+        <h2>Results</h2>
+
+        <br>
+    {% if final_result is defined %}
+    <div class="result">
+      {% if final_result == 0 %}
+      <center><h1>No Kidney Disease detected</h1></center>
+      {% else %}
+      <center><h1>Kidney Disease detected</h1></center>
+      {% endif %}
+    </div>
+    {% endif %}
+</div>
+  </body>
+</html>
+

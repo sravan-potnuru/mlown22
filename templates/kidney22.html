@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../static/input.css" />
+    <title>chronic kidney  Disease Detection</title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom right, #0F172A, #233a94);
+        background-size: cover;
+        font-family: Arial, sans-serif;
+      }
+      .heading h2 {
+        color: rgb(0, 72, 255);
+        font-size: 4em;
+        position: absolute;
+        top: -50px;
+        left: 300px;
+      }
+
+      .bg-text1 {
+        background-color: rgb(0, 72, 255);
+        background-color: rgba(0, 0, 0, 0.3);
+        color: rgb(0, 72, 255);
+        font-weight: bold;
+        border: 3px solid rgb(0, 72, 255);
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(50%, -100%);
+        z-index: 2;
+        width: 25%;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        opacity: 0.7;
+        z-index: -1;
+      }
+      form{
+        display: flex;
+        flex-wrap: wrap;
+        
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <div class="logo">Disease Detection</div>
+          <li><a class="nav-link" id="parkinson-link" href="{{ url_for('index') }}">HOME</a></li>
+          <li><a class="nav-link" id="parkinson-link" href="{{ url_for('parkinsons') }}">Parkinson's</a></li>
+         <li> <a class="nav-link" id="DIABETES-link" href="{{ url_for('diabetes') }}">Diabete's</a></li>
+         <li> <a class="nav-link" id="DIABETES-link" href="{{ url_for('heart') }}">HEART</a></li>
+         <li> <a class="nav-link" id="Liver-link" href="{{ url_for('liver') }}">LIVER</a></li>
+         <li> <a class="nav-link" id="kidney-link" href="{{ url_for('kidney') }}">KIDNEY</a></li>
+         <li> <a class="nav-link" id="register-link" href="{{ url_for('register') }}">REGISTER</a></li>
+         <li> <a class="nav-link" id="register-link" href="{{ url_for('login') }}">LOGIN</a></li>
+         <li> <a class="nav-link" id="register-link" href="{{ url_for('logout') }}">LOGout</a></li>
+      <li><a href="{{url_for('profile')}}" style="color:white;margin-left:0px">{{s}}</a></li>
+
+      </ul>
+  </nav>
+
+    <div class="overlay"></div>
+    <section>
+      <div class="heading">
+        <h2>chronic kidney Disease Prediction</h2>
+        
+      </div>
+    </section>
+    <div class="bg-text">
+      <form action="/kidney" method="post">
+        <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="age" placeholder="age">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input  class="form-control" type="text" name="bp" placeholder="bp">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="al" placeholder="al">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="su" placeholder="su">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="rbc" placeholder="rbc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pc" placeholder="pc">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pcc" placeholder="pcc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="ba" placeholder="ba">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="bgr" placeholder="bgr">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="bu" placeholder="bu">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="sc" placeholder="sc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pot" placeholder="pot">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="wc" placeholder="wc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="htn" placeholder="htn">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="dm" placeholder="dm">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="cad" placeholder="cad">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pe" placeholder="pe">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="ane" placeholder="ane">
+              </div>
+          </div>
+          <div class="container">
+            <input type="submit" value="Submit" class="button" />
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class="bg-text1">
+        <h2>Results</h2>
+
+        <br>
+    {% if final_result is defined %}
+    <div class="result">
+      {% if final_result == 0 %}
+      <center><h1>No Kidney Disease detected</h1></center>
+      {% else %}
+      <center><h1>Kidney Disease detected</h1></center>
+      {% endif %}
+    </div>
+    {% endif %}
+</div>
+  </body>
+</html>
+
