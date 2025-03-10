@@ -11,7 +11,12 @@ from flask import Flask, render_template, request, jsonify
 
 
 
-app = Flask(__name__)
+# app = Flask(__name__
+#              template_folder='templates',  # Default, but good to specify
+#             static_folder='static')
+app = Flask(__name__, 
+            template_folder='templates',  # Default, but good to specify
+            static_folder='static')       # Default, but good to specify
  
  
 app.secret_key = 'sravan123'
@@ -95,7 +100,9 @@ def register():
                     msg = 'You have successfully registered!'
             else:
                 msg = 'Please fill out the form!'
+           
             return render_template('register.html', s=session['username'],msg=msg)
+    
     return render_template('register.html')
 
 
