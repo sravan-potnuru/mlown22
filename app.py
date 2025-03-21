@@ -17,8 +17,10 @@ from io import BytesIO
 
 import numpy as np
 import tensorflow as tf
-# from tensorflow.keras.preprocessing import image
+# from keras.preprocessing import image
 # from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model
+
 
 
 
@@ -29,31 +31,39 @@ app = Flask(__name__,
             template_folder='templates',  # Default, but good to specify
             static_folder='static')       # Default, but good to specify
  
-# def preprocess_image(img_path, target_size=(224, 224)):  # Update size if different
-#     img = image.load_img(img_path, target_size=target_size)
-#     img_array = image.img_to_array(img)
-#     img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
-#     img_array = img_array / 255.0  # Normalize
-#     return img_array
 
-# def predict_risk(image_path):
-#     processed_image = preprocess_image(image_path)
-#     predictions = eye.predict(processed_image)
-#     return predictions
+# Function to preprocess the image
+def preprocess_image(img_path, target_size=(224, 224)):
+    img = tf.keras.preprocessing.image.load_img(img_path, target_size=target_size)
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
+    img_array = img_array / 255.0  # Normalize
+    return img_array
 
+# Function to predict the risk
+def predict_risk(image_path):
+    processed_image = preprocess_image(image_path)
+    predictions = eye.predict(processed_image)
+    return predictions
 
+# # Existing code for UPLOAD_FOLDER, allowed_file, etc.
+# UPLOAD_FOLDER = 'static/uploads'
+# ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+# if not os.path.exists(UPLOAD_FOLDER):
+#     os.makedirs(UPLOAD_FOLDER)
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB max file size
 
+# Add this to your app configuration
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-UPLOAD_FOLDER = 'static/uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB max file size
-
+# def allowed_file(filename):
+#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB limit
 app.secret_key = 'sravan123'
  
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
@@ -71,7 +81,7 @@ heart22=pickle.load(open("model/heart.pkl","rb"))
 preheart=pickle.load(open("model/heart_Model.pkl","rb"))
 liver22=pickle.load(open('model/liver1.pkl',"rb") )
 kid=pickle.load(open('model/kidney.pkl',"rb") )
-# eye=pickle.load(open('C:\Users\HP\OneDrive\Desktop\mlown22\model\alexnet_model.h5',"rb"))
+eye = load_model("model/alexnet_model.h5")
 
 @app.route('/login', methods =['GET', 'POST'])
 def login():
@@ -222,116 +232,106 @@ def profile():
     return render_template("profile.html")
 
 
-# Add this import to your app.py
-# from retinal_model import RetinalCVDPredictor
-
-# Initialize the model
-# retinal_predictor = RetinalCVDPredictor('model/retinal_cvd_model.h5')
-
-# Updated route with model integration
+@app.route('/retinal', methods=["GET", "POST"])
+def retinal():
+    if request.method == 'POST':
+        # Enhanced debugging information
+        print("=" * 50)
+        print("FORM DATA DEBUG:")
+        print("Request method:", request.method)
+        print("Content-Type:", request.headers.get('Content-Type', 'No Content-Type header'))
+        print("Content-Length:", request.headers.get('Content-Length', 'No Content-Length header'))
+        print("Request form data:", request.form)
+        print("Request files:", request.files)
+        print("Request data:", request.data)
+        print("Raw request get_data:", request.get_data())
+        print("=" * 50)
+        
+        # Check if the post request has the file part
+        if 'retinalImage' not in request.files:
+            error = "No file part in the request"
+            print(f"Error: {error}")
+            if 'username' in session:
+                return render_template('retinal.html', error=error, s=session['username'])
+            return render_template('retinal.html', error=error)
+            
+        file = request.files['retinalImage']
+        print(f"File received: {file.filename}, {file.content_type}, size: {request.headers.get('Content-Length')}")
+        
+        # If user does not select file, browser also submits an empty part without filename
+        if file.filename == '':
+            error = "No selected file"
+            print(f"Error: {error}")
+            if 'username' in session:
+                return render_template('retinal.html', error=error, s=session['username'])
+            return render_template('retinal.html', error=error)
+            
+        if file and allowed_file(file.filename):
+            try:
+                filename = secure_filename(file.filename)
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                print(f"Saving file to: {filepath}")
+                file.save(filepath)
+                print(f"File saved successfully")
+                
+                # Check if file was actually saved
+                if not os.path.exists(filepath):
+                    raise Exception(f"File was not saved to {filepath}")
+                print(f"File size on disk: {os.path.getsize(filepath)} bytes")
+                
+                # Predict using the model
+                print("Starting prediction...")
+                predictions = predict_risk(filepath)
+                risk_percentage = np.argmax(predictions)
+                print(f"Prediction successful: class {risk_percentage}")
+                
+                # Map the prediction to a risk level and recommendation
+                risk_levels = ["No_DR", "Mild", "Moderate", "Severe", "Proliferate_DR"]
+                recommendations = [
+                    "No CVD detected.",
+                    "Mild CVD detected. Regular check-ups recommended.",
+                    "Moderate CVD detected. Consult with a healthcare provider.",
+                    "Severe CVD detected. Immediate consultation with a healthcare provider is recommended.",
+                    "Proliferate CVD detected. Urgent medical attention is required."
+                ]
+                
+                risk_level = risk_levels[risk_percentage]
+                recommendation = recommendations[risk_percentage]
+                
+                result = {
+                    'prediction_result': f"{int(risk_percentage) * 25}%",  # Convert to percentage
+                    'risk_level': risk_level,
+                    'recommendation': recommendation,
+                    'image_path': os.path.join('uploads', filename)
+                }
+                
+                print(f"Rendering template with results: {result}")
+                if 'username' in session:
+                    return render_template('retinal.html', **result, s=session['username'])
+                return render_template('retinal.html', **result)
+                
+            except Exception as e:
+                import traceback
+                error = f"Error processing image: {str(e)}"
+                print(f"Exception occurred: {error}")
+                print(traceback.format_exc())
+                if 'username' in session:
+                    return render_template('retinal.html', error=error, s=session['username'])
+                return render_template('retinal.html', error=error)
+        else:
+            error = f"Invalid file format: {file.filename}. Please upload a JPG, PNG, or JPEG file."
+            print(f"Error: {error}")
+            if 'username' in session:
+                return render_template('retinal.html', error=error, s=session['username'])
+            return render_template('retinal.html', error=error)
+    
+    # GET request
+    if 'username' in session:
+        return render_template('retinal.html', s=session['username'])
+    return render_template('retinal.html')
 # @app.route('/retinal', methods=['GET', 'POST'])
 # def retinal():
-#     if 'username' in session:
-#         if request.method == 'POST':
-#             if 'retinalImage' not in request.files:
-#                 return render_template('retinal.html', error="No file part", s=session['username'])
-
-#             file = request.files['retinalImage']
-
-#             if file.filename == '':
-#                 return render_template('retinal.html', error="No selected file", s=session['username'])
-
-#             if file and allowed_file(file.filename):
-#                 filename = secure_filename(file.filename)
-#                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#                 file.save(filepath)
-
-#                 try:
-#                     # Predict using the model
-#                     predictions = predict_risk(filepath)
-#                     risk_percentage = np.argmax(predictions)  # Assuming your model outputs probabilities for classes 0-4
-
-#                     # Map the prediction to a risk level and recommendation
-#                     risk_levels = ["Very Low", "Low", "Moderate", "High", "Very High"]
-#                     recommendations = [
-#                         "Maintain a healthy lifestyle with regular check-ups.",
-#                         "Consider lifestyle changes and consult with a healthcare provider.",
-#                         "Consult with a healthcare provider for further evaluation.",
-#                         "Immediate consultation with a healthcare provider is recommended.",
-#                         "Urgent medical attention is required."
-#                     ]
-
-#                     risk_level = risk_levels[risk_percentage]
-#                     recommendation = recommendations[risk_percentage]
-
-#                     return render_template('retinal.html',
-#                                            prediction_result=risk_percentage,
-#                                            risk_level=risk_level,
-#                                            recommendation=recommendation,
-#                                            image_path=os.path.join('uploads', filename),
-#                                            s=session['username'])
-
-#                 except Exception as e:
-#                     return render_template('retinal.html',
-#                                            error=f"Error processing image: {str(e)}",
-#                                            s=session['username'])
-#             else:
-#                 return render_template('retinal.html',
-#                                        error="Invalid file format. Please upload a JPG, PNG, or JPEG file.",
-#                                        s=session['username'])
-
-#         return render_template('retinal.html', s=session['username'])
-#     else:
-#         if request.method == 'POST':
-#             if 'retinalImage' not in request.files:
-#                 return render_template('retinal.html', error="No file part")
-
-#             file = request.files['retinalImage']
-
-#             if file.filename == '':
-#                 return render_template('retinal.html', error="No selected file")
-
-#             if file and allowed_file(file.filename):
-#                 filename = secure_filename(file.filename)
-#                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-#                 file.save(filepath)
-
-#                 try:
-#                     # Predict using the model
-#                     predictions = predict_risk(filepath)
-#                     risk_percentage = np.argmax(predictions)  # Assuming your model outputs probabilities for classes 0-4
-
-#                     # Map the prediction to a risk level and recommendation
-#                     risk_levels = ["Very Low", "Low", "Moderate", "High", "Very High"]
-#                     recommendations = [
-#                         "Maintain a healthy lifestyle with regular check-ups.",
-#                         "Consider lifestyle changes and consult with a healthcare provider.",
-#                         "Consult with a healthcare provider for further evaluation.",
-#                         "Immediate consultation with a healthcare provider is recommended.",
-#                         "Urgent medical attention is required."
-#                     ]
-
-#                     risk_level = risk_levels[risk_percentage]
-#                     recommendation = recommendations[risk_percentage]
-
-#                     return render_template('retinal.html',
-#                                            prediction_result=risk_percentage,
-#                                            risk_level=risk_level,
-#                                            recommendation=recommendation,
-#                                            image_path=os.path.join('uploads', filename))
-
-#                 except Exception as e:
-#                     return render_template('retinal.html',
-#                                            error=f"Error processing image: {str(e)}")
-#             else:
-#                 return render_template('retinal.html',
-#                                        error="Invalid file format. Please upload a JPG, PNG, or JPEG file.")
-
-#         return render_template('retinal.html')
-
-@app.route('/retinal', methods=['GET', 'POST'])
-def retinal():
-    return render_template("retinal.html")
+#     return render_template('retinal.html')
 
 
 
