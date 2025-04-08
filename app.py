@@ -31,7 +31,7 @@ app = Flask(__name__,
             template_folder='templates',  # Default, but good to specify
             static_folder='static')       # Default, but good to specify
  
-
+app.config['FREEZER_RELATIVE_URLS'] = True
 # Function to preprocess the image
 def preprocess_image(img_path, target_size=(224, 224)):
     img = tf.keras.preprocessing.image.load_img(img_path, target_size=target_size)
@@ -46,13 +46,27 @@ def predict_risk(image_path):
     predictions = eye.predict(processed_image)
     return predictions
 
-# # Existing code for UPLOAD_FOLDER, allowed_file, etc.
-# UPLOAD_FOLDER = 'static/uploads'
-# ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-# if not os.path.exists(UPLOAD_FOLDER):
-#     os.makedirs(UPLOAD_FOLDER)
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-# app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB max file size
+def is_retinal_image(img_path):
+    try:
+        img = Image.open(img_path).convert('RGB')
+        img = img.resize((224, 224))
+        img_array = np.array(img)
+
+        # Simple check: retinal images are usually dark with a reddish tone
+        avg_color = np.mean(img_array, axis=(0, 1))  # RGB mean
+        r, g, b = avg_color
+
+        # Retinal images tend to have higher red values and are darker overall
+        brightness = (r + g + b) / 3
+        if r > g and r > b and brightness < 150:
+            return True
+        return False
+    except Exception as e:
+        print(f"Error in is_retinal_image: {str(e)}")
+        return False
+
+
+
 
 # Add this to your app configuration
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
@@ -232,6 +246,107 @@ def profile():
     return render_template("profile.html")
 
 
+# @app.route('/retinal', methods=["GET", "POST"])
+# def retinal():
+#     if request.method == 'POST':
+#         # Enhanced debugging information
+#         print("=" * 50)
+#         print("FORM DATA DEBUG:")
+#         print("Request method:", request.method)
+#         print("Content-Type:", request.headers.get('Content-Type', 'No Content-Type header'))
+#         print("Content-Length:", request.headers.get('Content-Length', 'No Content-Length header'))
+#         print("Request form data:", request.form)
+#         print("Request files:", request.files)
+#         print("Request data:", request.data)
+#         print("Raw request get_data:", request.get_data())
+#         print("=" * 50)
+        
+#         # Check if the post request has the file part
+#         if 'retinalImage' not in request.files:
+#             error = "No file part in the request"
+#             print(f"Error: {error}")
+#             if 'username' in session:
+#                 return render_template('retinal.html', error=error, s=session['username'])
+#             return render_template('retinal.html', error=error)
+            
+#         file = request.files['retinalImage']
+#         print(f"File received: {file.filename}, {file.content_type}, size: {request.headers.get('Content-Length')}")
+        
+        
+
+#         # If user does not select file, browser also submits an empty part without filename
+#         if file.filename == '':
+#             error = "No selected file"
+#             print(f"Error: {error}")
+#             if 'username' in session:
+#                 return render_template('retinal.html', error=error, s=session['username'])
+#             return render_template('retinal.html', error=error)
+            
+#         if file and allowed_file(file.filename):
+#             try:
+#                 filename = secure_filename(file.filename)
+#                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+#                 print(f"Saving file to: {filepath}")
+#                 file.save(filepath)
+#                 print(f"File saved successfully")
+                
+#                 # Check if file was actually saved
+#                 if not os.path.exists(filepath):
+#                     raise Exception(f"File was not saved to {filepath}")
+#                 print(f"File size on disk: {os.path.getsize(filepath)} bytes")
+#                 if not is_retinal_image(filepath):
+#                     print('image')
+#                     return render_template("retinal.html", error="Invalid image. Please upload a retinal image.")
+#                 # Predict using the model
+#                 print("Starting prediction...")
+#                 predictions = predict_risk(filepath)
+#                 risk_percentage = np.argmax(predictions)
+#                 print(f"Prediction successful: class {risk_percentage}")
+                
+#                 # Map the prediction to a risk level and recommendation
+#                 risk_levels = ["No_DR", "Mild", "Moderate", "Severe", "Proliferate_DR"]
+#                 recommendations = [
+#                     "No CVD detected.",
+#                     "Mild CVD detected. Regular check-ups recommended.",
+#                     "Moderate CVD detected. Consult with a healthcare provider.",
+#                     "Severe CVD detected. Immediate consultation with a healthcare provider is recommended.",
+#                     "Proliferate CVD detected. Urgent medical attention is required."
+#                 ]
+                
+#                 risk_level = risk_levels[risk_percentage]
+#                 recommendation = recommendations[risk_percentage]
+                
+#                 result = {
+#                     'prediction_result': f"{int(risk_percentage) * 25}%",  # Convert to percentage
+#                     'risk_level': risk_level,
+#                     'recommendation': recommendation,
+#                     'image_path': os.path.join('uploads', filename)
+#                 }
+                
+#                 print(f"Rendering template with results: {result}")
+#                 if 'username' in session:
+#                     return render_template('retinal.html', **result, s=session['username'])
+#                 return render_template('retinal.html', **result)
+                
+#             except Exception as e:
+#                 import traceback
+#                 error = f"Error processing image: {str(e)}"
+#                 print(f"Exception occurred: {error}")
+#                 print(traceback.format_exc())
+#                 if 'username' in session:
+#                     return render_template('retinal.html', error=error, s=session['username'])
+#                 return render_template('retinal.html', error=error)
+#         else:
+#             error = f"Invalid file format: {file.filename}. Please upload a JPG, PNG, or JPEG file."
+#             print(f"Error: {error}")
+#             if 'username' in session:
+#                 return render_template('retinal.html', error=error, s=session['username'])
+#             return render_template('retinal.html', error=error)
+    
+#     # GET request
+#     if 'username' in session:
+#         return render_template('retinal.html', s=session['username'])
+#     return render_template('retinal.html')
 @app.route('/retinal', methods=["GET", "POST"])
 def retinal():
     if request.method == 'POST':
@@ -243,8 +358,6 @@ def retinal():
         print("Content-Length:", request.headers.get('Content-Length', 'No Content-Length header'))
         print("Request form data:", request.form)
         print("Request files:", request.files)
-        print("Request data:", request.data)
-        print("Raw request get_data:", request.get_data())
         print("=" * 50)
         
         # Check if the post request has the file part
@@ -256,7 +369,7 @@ def retinal():
             return render_template('retinal.html', error=error)
             
         file = request.files['retinalImage']
-        print(f"File received: {file.filename}, {file.content_type}, size: {request.headers.get('Content-Length')}")
+        print(f"File received: {file.filename}, {file.content_type}")
         
         # If user does not select file, browser also submits an empty part without filename
         if file.filename == '':
@@ -279,10 +392,18 @@ def retinal():
                     raise Exception(f"File was not saved to {filepath}")
                 print(f"File size on disk: {os.path.getsize(filepath)} bytes")
                 
+                # Check if it's a retinal image
+                if not is_retinal_image(filepath):
+                    error = "Invalid image. Please upload a retinal image."
+                    print(f"Error: {error}")
+                    if 'username' in session:
+                        return render_template('retinal.html', error=error, s=session['username'])
+                    return render_template('retinal.html', error=error)
+                
                 # Predict using the model
                 print("Starting prediction...")
                 predictions = predict_risk(filepath)
-                risk_percentage = np.argmax(predictions)
+                risk_percentage = int(np.argmax(predictions))
                 print(f"Prediction successful: class {risk_percentage}")
                 
                 # Map the prediction to a risk level and recommendation
@@ -297,9 +418,10 @@ def retinal():
                 
                 risk_level = risk_levels[risk_percentage]
                 recommendation = recommendations[risk_percentage]
+                percentage_value = f"{risk_percentage * 25}%"
                 
                 result = {
-                    'prediction_result': f"{int(risk_percentage) * 25}%",  # Convert to percentage
+                    'prediction_result': percentage_value,
                     'risk_level': risk_level,
                     'recommendation': recommendation,
                     'image_path': os.path.join('uploads', filename)
@@ -329,10 +451,6 @@ def retinal():
     if 'username' in session:
         return render_template('retinal.html', s=session['username'])
     return render_template('retinal.html')
-# @app.route('/retinal', methods=['GET', 'POST'])
-# def retinal():
-#     return render_template('retinal.html')
-
 
 
 if __name__ == "__main__":

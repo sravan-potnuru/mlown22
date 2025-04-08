@@ -1,0 +1,343 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+   
+    <title>chronic kidney  Disease Detection</title>
+    <link rel="stylesheet" href="../static/newcss.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+ 
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom right, #0F172A, #233a94);
+        background-size: cover;
+        font-family: Arial, sans-serif;
+      }
+      .heading h2 {
+        color: rgb(0, 72, 255);
+        font-size: 4em;
+        position: absolute;
+        top: -50px;
+        left: 300px;
+      }
+
+      .bg-text1 {
+        background-color: rgb(0, 72, 255);
+        background-color: rgba(0, 0, 0, 0.3);
+        color: rgb(0, 72, 255);
+        font-weight: bold;
+        border: 3px solid rgb(0, 72, 255);
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translate(50%, -100%);
+        z-index: 2;
+        width: 25%;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        opacity: 0.7;
+        z-index: -1;
+      }
+      form{
+        display: flex;
+        flex-wrap: wrap;
+        
+      }
+    </style> 
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <div class="logo">Disease Detection</div>
+          <li><a class="nav-link" id="parkinson-link" href="index.html">HOME</a></li>
+          <li><a class="nav-link" id="parkinson-link" href="parkinson">Parkinson's</a></li>
+         <li> <a class="nav-link" id="DIABETES-link" href="diabetes">Diabete's</a></li>
+         <li> <a class="nav-link" id="DIABETES-link" href="heart">HEART</a></li>
+         <li> <a class="nav-link" id="Liver-link" href="liver">LIVER</a></li>
+         <li> <a class="nav-link" id="kidney-link" href="kidney">KIDNEY</a></li>
+         <li> <a class="nav-link" id="register-link" href="register">REGISTER</a></li>
+         <li> <a class="nav-link" id="register-link" href="login">LOGIN</a></li>
+         <li> <a class="nav-link" id="register-link" href="logout">LOGout</a></li>
+      <li><a href="profile" style="color:white;margin-left:0px"></a></li>
+
+      </ul>
+  </nav>
+
+    <div class="overlay"></div>
+    <section>
+      <div class="heading">
+        <h2>chronic kidney Disease Prediction</h2>
+        
+      </div>
+    </section>
+    <div class="bg-text">
+      <form action="/kidney" method="post">
+        <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="age" placeholder="age">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input  class="form-control" type="text" name="bp" placeholder="bp">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input class="form-control" type="text" name="al" placeholder="al">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="su" placeholder="su">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="rbc" placeholder="rbc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pc" placeholder="pc">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pcc" placeholder="pcc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="ba" placeholder="ba">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="bgr" placeholder="bgr">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="bu" placeholder="bu">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="sc" placeholder="sc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pot" placeholder="pot">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="wc" placeholder="wc">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="htn" placeholder="htn">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="dm" placeholder="dm">
+              </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="cad" placeholder="cad">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="pe" placeholder="pe">
+              </div>
+          </div>
+          <div class="col-md-4">
+              <div class="form-group">
+                  <input style="border: 2px solid brown;" class="form-control" type="text" name="ane" placeholder="ane">
+              </div>
+          </div>
+          <div class="container">
+            <input type="submit" value="Submit" class="button" />
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class="bg-text1">
+        <h2>Results</h2>
+
+        <br>
+    
+</div>
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chronic Kidney Disease Detection</title>
+    <link rel="stylesheet" href="../static/newcss.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="shine">DISEASE DETECTION</div>
+        </a>
+        <ul class="menu">
+            <li>
+                <div class="loading">
+                    <svg height="48px" width="64px" style="margin-left: -20px;">
+                        <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                        </polyline>
+                        <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                        </polyline>
+                    </svg>
+                </div>
+            </li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="parkinson">Parkinson's</a></li>
+            <li><a href="diabetes">Diabetes</a></li>
+            <li><a href="heart">Heart</a></li>
+            <li><a href="liver">Liver</a></li>
+            <li><a href="kidney">Kidney</a></li>
+            <li><a href="register">Register</a></li>
+            <li><a href="login">Login</a></li>
+            
+        </ul>
+    </nav>
+
+    <div class="overlay"></div>
+    <section>
+      <div class="heading">
+        <h2>Chronic Kidney Disease Prediction</h2>
+      </div>
+    </section>
+    <div class="bg-text">
+      <form action="/kidney" method="post">
+        <!-- Row 1 -->
+        <div class="container">
+          <input type="number" step="any" name="age" required="" class="input" />
+          <label class="label" for="age">Age:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="bp" required="" class="input" />
+          <label class="label" for="bp">Blood Pressure:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="al" required="" class="input" />
+          <label class="label" for="al">Albumin:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="su" required="" class="input" />
+          <label class="label" for="su">Sugar:</label>
+        </div>
+        
+        <!-- Row 2 -->
+        <div class="container">
+          <input type="number" step="any" name="rbc" required="" class="input" />
+          <label class="label" for="rbc">Red Blood Cells:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="pc" required="" class="input" />
+          <label class="label" for="pc">Pus Cell:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="pcc" required="" class="input" />
+          <label class="label" for="pcc">Pus Cell Clumps:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="ba" required="" class="input" />
+          <label class="label" for="ba">Bacteria:</label>
+        </div>
+        
+        <!-- Row 3 -->
+        <div class="container">
+          <input type="number" step="any" name="bgr" required="" class="input" />
+          <label class="label" for="bgr">Blood Glucose Random:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="bu" required="" class="input" />
+          <label class="label" for="bu">Blood Urea:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="sc" required="" class="input" />
+          <label class="label" for="sc">Serum Creatinine:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="pot" required="" class="input" />
+          <label class="label" for="pot">Potassium:</label>
+        </div>
+        
+        <!-- Row 4 -->
+        <div class="container">
+          <input type="number" step="any" name="wc" required="" class="input" />
+          <label class="label" for="wc">White Blood Cell Count:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="htn" required="" class="input" />
+          <label class="label" for="htn">Hypertension:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="dm" required="" class="input" />
+          <label class="label" for="dm">Diabetes Mellitus:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="cad" required="" class="input" />
+          <label class="label" for="cad">Coronary Artery Disease:</label>
+        </div>
+        
+        <!-- Row 5 -->
+        <div class="container">
+          <input type="number" step="any" name="pe" required="" class="input" />
+          <label class="label" for="pe">Pedal Edema:</label>
+        </div>
+        <div class="container">
+          <input type="number" step="any" name="ane" required="" class="input" />
+          <label class="label" for="ane">Anemia:</label>
+        </div>
+        <div class="container">
+          <input type="submit" value="Submit" class="button" />
+        </div>
+      </form>
+    </div>
+    <div class="bg-text1">
+        <h2>Results</h2>
+
+        <br>
+    
+    </div>
+  </body>
+</html>

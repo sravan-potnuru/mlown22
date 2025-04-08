@@ -1,0 +1,624 @@
+ <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cardiovascular Disease Prediction</title>
+    <link rel="stylesheet" href="../static/newcss.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+      .image-upload-container {
+        margin: 20px auto;
+        max-width: 500px;
+      }
+      
+      .image-preview {
+        width: 100%;
+        height: 250px;
+        border: 2px dashed #0ef;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+        background-color: rgba(0, 238, 255, 0.05);
+        transition: all 0.3s ease;
+      }
+      
+      .image-preview:hover {
+        background-color: rgba(0, 238, 255, 0.1);
+        border-color: rgba(0, 238, 255, 0.8);
+      }
+      
+      .image-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        display: none;
+        border-radius: 8px;
+        object-fit: contain;
+      }
+      
+      .upload-label {
+        display: inline-block;
+        padding: 12px 20px;
+        background: linear-gradient(45deg, #00bfff, #0ef);
+        color: #0F172A;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        margin-bottom: 10px;
+        text-align: center;
+        min-width: 150px;
+      }
+      
+      .upload-label:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 25px rgba(0, 238, 255, 0.8);
+      }
+      
+      .file-input {
+        display: none;
+      }
+      
+      .prediction-result {
+        margin-top: 20px;
+        padding: 25px;
+        border-radius: 15px;
+        background: rgba(0, 0, 0, 0.4);
+        border: 3px solid #0ef;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(0, 238, 255, 0.3);
+        animation: glow 2s infinite alternate;
+      }
+      
+      @keyframes glow {
+        from {
+          box-shadow: 0 0 10px rgba(0, 238, 255, 0.3);
+        }
+        to {
+          box-shadow: 0 0 20px rgba(0, 238, 255, 0.6);
+        }
+      }
+      
+      .prediction-result h3 {
+        color: #0ef;
+        margin-bottom: 15px;
+        font-size: 22px;
+        font-weight: 600;
+        text-shadow: 0 0 10px rgba(0, 238, 255, 0.5);
+      }
+      
+      .risk-meter {
+        width: 100%;
+        height: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        margin: 20px 0;
+        position: relative;
+        overflow: hidden;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      
+      .risk-level {
+        height: 100%;
+        background: linear-gradient(45deg, #00ff00, #ffff00, #ff0000);
+        width: 0%;
+        transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      
+      .risk-percentage {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+      }
+      
+      .loader {
+        border: 5px solid rgba(0, 238, 255, 0.3);
+        border-radius: 50%;
+        border-top: 5px solid #0ef;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .upload-info {
+        color: rgba(255, 255, 255, 0.7);
+        text-align: center;
+        margin-top: 10px;
+        font-size: 14px;
+      }
+      
+      .drag-text {
+        color: #0ef;
+        font-size: 20px;
+        font-weight: 500;
+        text-align: center;
+        padding: 0 15px;
+      }
+      
+      .recommendation {
+        background-color: rgba(0, 238, 255, 0.1);
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        border-left: 3px solid #0ef;
+        text-align: left;
+        color: #fff;
+      }
+      
+      .analyzed-image {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(0, 238, 255, 0.3);
+      }
+      
+      .analyzed-image h4 {
+        color: #0ef;
+        margin-bottom: 10px;
+      }
+      
+      .error-message {
+        color: #ff6b6b;
+        background-color: rgba(255, 107, 107, 0.1);
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+        border-left: 3px solid #ff6b6b;
+      }
+      
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .bg-text {
+          width: 90%;
+          transform: translate(-50%, -50%);
+        }
+        
+        .bg-text1 {
+          width: 90%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="#" class="logo">
+          <div class="shine">DISEASE DETECTION</div>
+      </a>
+      <ul class="menu">
+          <li>
+              <div class="loading">
+                  <svg height="48px" width="64px" style="margin-left: -20px;">
+                      <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                      </polyline>
+                      <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                      </polyline>
+                  </svg>
+              </div>
+          </li>
+          <li><a href="index.html">HOME</a></li>
+          <li><a href="parkinson">Parkinson's</a></li>
+          <li><a href="diabetes">Diabetes</a></li>
+          <li><a href="heart">Heart</a></li>
+          <li><a href="liver">Liver</a></li>
+          <li><a href="kidney">Kidney</a></li>
+          <li><a href="retinal">Retinal</a></li>
+          <li><a href="register">Register</a></li>
+          <li><a href="login">Login</a></li>
+          
+      </ul>
+    </nav>
+
+    <div class="overlay"></div>
+    <section>
+      <div class="heading">
+        <h2>Cardiovascular Disease Risk Prediction</h2>
+      </div>
+    </section>
+    
+    <div class="bg-text">
+      
+   
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div class="container" style="width: 100%;">
+        <div class="image-upload-container">
+          
+          <div class="image-preview" id="imagePreview">
+            <img src="" alt="Image Preview" id="previewImg">
+            <div class="drag-text" id="dragText">Drag and drop retinal image here or click to upload</div>
+          </div>
+          
+          <center>
+            <label for="retinalImage" class="upload-label">
+              Choose Image
+            </label>
+            <input type="file" name="retinalImage" id="retinalImage" class="file-input" accept="image/jpeg,image/png,image/jpg" required>
+          </center>
+          
+          <p class="upload-info">Supported formats: JPG, PNG, JPEG (Max size: 5MB)</p>
+          <center>
+          <div class="container">
+            <button type="button" class="button" id="submitBtn">Analyze Image</button>
+          </div>
+        </center>
+          <div class="loader" id="loader" style="display: none;"></div>
+        </div>
+      </div>
+    </form>
+    </div>
+
+    <div class="bg-text1">
+      <h2>Results</h2>
+      <br>
+      
+    </div>
+    <!-- <script>
+      
+document.getElementById('submitBtn').addEventListener('click', function() {
+  const fileInput = document.getElementById('retinalImage');
+  const errorMessage = document.getElementById('errorMessage');
+  const loader = document.getElementById('loader');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  // Validate file selection
+  if (fileInput.files.length === 0) {
+    errorMessage.textContent = 'Please select an image to upload';
+    errorMessage.style.display = 'block';
+    return;
+  }
+  
+  // Create FormData object
+  const formData = new FormData();
+  formData.append('retinalImage', fileInput.files[0]);
+  
+  // Show loader, hide button
+  loader.style.display = 'block';
+  submitBtn.style.display = 'none';
+  errorMessage.style.display = 'none';
+  
+  // Send AJAX request
+  fetch('/retinal', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.text())
+  .then(html => {
+    // Replace the current page with the response
+    document.open();
+    document.write(html);
+    document.close();
+  })
+  .catch(error => {
+    // Show error message
+    errorMessage.textContent = 'Error uploading file: ' + error.message;
+    errorMessage.style.display = 'block';
+    
+    // Hide loader, show button
+    loader.style.display = 'none';
+    submitBtn.style.display = 'block';
+  });
+});
+      // Preview image before upload
+      const fileInput = document.getElementById('retinalImage');
+      const previewImg = document.getElementById('previewImg');
+      const imagePreview = document.getElementById('imagePreview');
+      const dragText = document.getElementById('dragText');
+      const submitBtn = document.getElementById('submitBtn');
+      const loader = document.getElementById('loader');
+      
+      fileInput.addEventListener('change', function() {
+
+        const file = this.files[0];
+        console.log("File selected:", this.files[0]);
+        if (file) {
+          // Check file size (max 5MB)
+          if (file.size > 5 * 1024 * 1024) {
+            alert('File size exceeds 5MB. Please choose a smaller file.');
+            this.value = '';
+            return;
+          }
+          
+          // Check file type
+          const fileType = file.type;
+          if (!fileType.match('image/jpeg') && !fileType.match('image/png')) {
+            alert('Please upload a valid image file (JPG, JPEG, or PNG).');
+            this.value = '';
+            return;
+          }
+          
+          const reader = new FileReader();
+          
+          reader.addEventListener('load', function() {
+            previewImg.setAttribute('src', this.result);
+            previewImg.style.display = 'block';
+            dragText.style.display = 'none';
+          });
+          
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Drag and drop functionality
+      imagePreview.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        imagePreview.style.borderStyle = 'solid';
+        imagePreview.style.backgroundColor = 'rgba(0, 238, 255, 0.2)';
+        imagePreview.style.borderColor = '#0ef';
+        dragText.textContent = 'Release to Upload';
+      });
+      
+      imagePreview.addEventListener('dragleave', function() {
+        imagePreview.style.borderStyle = 'dashed';
+        imagePreview.style.backgroundColor = 'rgba(0, 238, 255, 0.05)';
+        imagePreview.style.borderColor = '#0ef';
+        dragText.textContent = 'Drag and drop retinal image here or click to upload';
+      });
+      
+      imagePreview.addEventListener('drop', function(e) {
+        e.preventDefault();
+        imagePreview.style.borderStyle = 'dashed';
+        imagePreview.style.backgroundColor = 'rgba(0, 238, 255, 0.05)';
+        
+        const file = e.dataTransfer.files[0];
+        if (file) {
+          // Check file size (max 5MB)
+          if (file.size > 5 * 1024 * 1024) {
+            alert('File size exceeds 5MB. Please choose a smaller file.');
+            return;
+          }
+          
+          // Check file type
+          const fileType = file.type;
+          if (!fileType.match('image/jpeg') && !fileType.match('image/png')) {
+            alert('Please upload a valid image file (JPG, JPEG, or PNG).');
+            return;
+          }
+          
+          fileInput.files = e.dataTransfer.files;
+          
+          const reader = new FileReader();
+          reader.addEventListener('load', function() {
+            previewImg.setAttribute('src', this.result);
+            previewImg.style.display = 'block';
+            dragText.style.display = 'none';
+          });
+          
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Click to upload
+      imagePreview.addEventListener('click', function() {
+        fileInput.click();
+      });
+      
+      // Show loading spinner on form submit
+      document.querySelector('form').addEventListener('submit', function(e) {
+        if (fileInput.files.length <= 0) {
+          e.preventDefault();
+          alert('Please select an image to upload');
+          return false;
+        }
+        
+        submitBtn.style.display = 'none';
+        loader.style.display = 'block';
+        
+        // Disable the form input during submission
+        const inputs = document.querySelectorAll('input, button');
+        inputs.forEach(input => {
+          input.disabled = true;
+        });
+        
+        return true;
+      });
+      
+      // Animate risk level on page load if prediction exists
+      document.addEventListener('DOMContentLoaded', function() {
+        const riskLevel = document.getElementById('riskLevel');
+        if (riskLevel) {
+          // Get the width from the prediction_result
+          const percentage = riskLevel.parentNode.querySelector('.risk-percentage').textContent;
+          
+          // Small delay for animation effect
+          setTimeout(() => {
+            riskLevel.style.width = percentage;
+          }, 500);
+        }
+        
+        // Display error message if present
+        const errorMessage = document.querySelector('.error-message');
+        if (errorMessage) {
+          errorMessage.style.display = 'block';
+          
+          // Auto-hide error message after 5 seconds
+          setTimeout(() => {
+            errorMessage.style.opacity = '0';
+            setTimeout(() => {
+              errorMessage.style.display = 'none';
+            }, 500);
+          }, 5000);
+        }
+      });
+    </script> -->
+    <script>
+      // Modified form submission handler
+      document.addEventListener('DOMContentLoaded', function() {
+        // Set up the form submit button
+        const submitBtn = document.getElementById('submitBtn');
+        if (submitBtn) {
+          submitBtn.addEventListener('click', function() {
+            const fileInput = document.getElementById('retinalImage');
+            let errorMessageElement = document.getElementById('errorMessage');
+            const loader = document.getElementById('loader');
+            
+            // Create error message element if it doesn't exist
+            if (!errorMessageElement) {
+              errorMessageElement = document.createElement('div');
+              errorMessageElement.id = 'errorMessage';
+              errorMessageElement.className = 'error-message';
+              const uploadContainer = document.querySelector('.image-upload-container');
+              uploadContainer.insertBefore(errorMessageElement, uploadContainer.firstChild);
+            }
+            
+            // Validate file selection
+            if (fileInput.files.length === 0) {
+              errorMessageElement.innerHTML = '<p class="error">Please select an image to upload</p>';
+              errorMessageElement.style.display = 'block';
+              return;
+            }
+            
+            // Create FormData object
+            const formData = new FormData();
+            formData.append('retinalImage', fileInput.files[0]);
+            
+            // Show loader, hide button
+            loader.style.display = 'block';
+            submitBtn.style.display = 'none';
+            errorMessageElement.style.display = 'none';
+            
+            // Submit the form
+            const form = document.getElementById('uploadForm');
+            form.method = 'POST';
+            form.action = '/retinal';
+            form.enctype = 'multipart/form-data';
+            form.submit();
+          });
+        }
+        
+        // Handle risk level display if prediction exists
+        const riskLevel = document.getElementById('riskLevel');
+        if (riskLevel) {
+          // Get the percentage from the prediction_result
+          const percentage = document.querySelector('.risk-percentage').textContent;
+          console.log("Setting risk level width to:", percentage);
+          
+          // Small delay for animation effect
+          setTimeout(() => {
+            riskLevel.style.width = percentage;
+          }, 500);
+        }
+        
+        // Image preview functionality
+        const fileInput = document.getElementById('retinalImage');
+        const previewImg = document.getElementById('previewImg');
+        const imagePreview = document.getElementById('imagePreview');
+        const dragText = document.getElementById('dragText');
+        
+        if (fileInput) {
+          fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+              // Check file size (max 5MB)
+              if (file.size > 5 * 1024 * 1024) {
+                alert('File size exceeds 5MB. Please choose a smaller file.');
+                this.value = '';
+                return;
+              }
+              
+              // Check file type
+              const fileType = file.type;
+              if (!fileType.match('image/jpeg') && !fileType.match('image/png')) {
+                alert('Please upload a valid image file (JPG, JPEG, or PNG).');
+                this.value = '';
+                return;
+              }
+              
+              const reader = new FileReader();
+              
+              reader.addEventListener('load', function() {
+                previewImg.setAttribute('src', this.result);
+                previewImg.style.display = 'block';
+                dragText.style.display = 'none';
+              });
+              
+              reader.readAsDataURL(file);
+            }
+          });
+        }
+        
+        // Drag and drop functionality
+        if (imagePreview) {
+          imagePreview.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderStyle = 'solid';
+            this.style.backgroundColor = 'rgba(0, 238, 255, 0.2)';
+            dragText.textContent = 'Release to Upload';
+          });
+          
+          imagePreview.addEventListener('dragleave', function() {
+            this.style.borderStyle = 'dashed';
+            this.style.backgroundColor = 'rgba(0, 238, 255, 0.05)';
+            dragText.textContent = 'Drag and drop retinal image here or click to upload';
+          });
+          
+          imagePreview.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderStyle = 'dashed';
+            this.style.backgroundColor = 'rgba(0, 238, 255, 0.05)';
+            
+            const file = e.dataTransfer.files[0];
+            if (file) {
+              // Check file size (max 5MB)
+              if (file.size > 5 * 1024 * 1024) {
+                alert('File size exceeds 5MB. Please choose a smaller file.');
+                return;
+              }
+              
+              // Check file type
+              const fileType = file.type;
+              if (!fileType.match('image/jpeg') && !fileType.match('image/png')) {
+                alert('Please upload a valid image file (JPG, JPEG, or PNG).');
+                return;
+              }
+              
+              fileInput.files = e.dataTransfer.files;
+              
+              const reader = new FileReader();
+              reader.addEventListener('load', function() {
+                previewImg.setAttribute('src', this.result);
+                previewImg.style.display = 'block';
+                dragText.style.display = 'none';
+              });
+              
+              reader.readAsDataURL(file);
+            }
+          });
+          
+          // Click to upload
+          imagePreview.addEventListener('click', function() {
+            fileInput.click();
+          });
+        }
+        
+        // Display error message if present
+        const errorMessage = document.querySelector('.error-message');
+        if (errorMessage && errorMessage.textContent.trim() !== '') {
+          errorMessage.style.display = 'block';
+          
+          // Auto-hide error message after 5 seconds
+          setTimeout(() => {
+            errorMessage.style.opacity = '0';
+            setTimeout(() => {
+              errorMessage.style.display = 'none';
+            }, 500);
+          }, 5000);
+        }
+      });
+      </script>
+  </body>
+</html>

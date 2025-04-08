@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Disease Detection</title>
+    <link rel="stylesheet" href="../static/newcss.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+   
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+<style>
+    /* Registration form styles */
+    .form-container {
+        margin-top: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 200px);
+    }
+    
+    .register-form {
+        background-color: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(0, 238, 255, 0.7);
+        border-radius: 16px;
+        padding: 25px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 0 25px rgba(0, 238, 255, 0.3);
+    }
+    
+    .register-form h1 {
+        color: #fff;
+        font-weight: 700;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    
+    .register-form .textbox {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: none;
+        background-color: rgba(30, 41, 59, 0.7);
+        border: 2px solid rgba(0, 238, 255, 0.4);
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        transition: all 0.3s;
+        box-sizing: border-box;
+    }
+    
+    .register-form .textbox:focus {
+        outline: none;
+        border-color: #0ef;
+        box-shadow: 0 0 15px rgba(0, 238, 255, 0.5);
+    }
+    
+    .register-form .btn {
+        padding: 12px 25px;
+        background: linear-gradient(45deg, #00bfff, #0ef);
+        color: #0F172A;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: all 0.3s;
+        width: 150px;
+        margin: 15px 0;
+    }
+    
+    .register-form .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 25px rgba(0, 238, 255, 0.8);
+    }
+    
+    .register-form p {
+        margin-top: 15px;
+        color: #cdcdcd;
+        font-size: 14px;
+    }
+    
+    .register-form a {
+        color: #0ef;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .register-form a:hover {
+        text-decoration: underline;
+    }
+    
+    .msg {
+        color: #0ef;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+        position: relative;
+    }
+
+    .form-group input {
+        margin-bottom: 0;
+    }
+
+</style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">
+            <div class="shine">DISEASE DETECTION</div>
+        </a>
+        <ul class="menu">
+            <li>
+                <div class="loading">
+                    <svg height="48px" width="64px" style="margin-left: -20px;">
+                        <polyline id="back" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                        </polyline>
+                        <polyline id="front" points="0.157 23.954, 14 23.954, 21.843 48, 43 0, 50 24, 64 24">
+                        </polyline>
+                    </svg>
+                </div>
+            </li>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="parkinson">Parkinson's</a></li>
+            <li><a href="diabetes">Diabetes</a></li>
+            <li><a href="heart">Heart</a></li>
+            <li><a href="liver">Liver</a></li>
+            <li><a href="kidney">Kidney</a></li>
+            <li><a href="retinal">Retinal</a></li>
+            <li><a href="register">Register</a></li>
+            <li><a href="login">Login</a></li>
+            
+        </ul>
+    </nav>
+    
+    <div class="overlay"></div>
+    
+    <div class="form-container">
+        <div class="register-form">
+            <h1>Register</h1>
+            <form action="register" method="post">
+                
+                <div class="form-group">
+                    <input id="username" name="username" type="text" placeholder="Username" class="textbox" required>
+                </div>
+                <div class="form-group">
+                    <input id="email" name="email" type="email" placeholder="Email ID" class="textbox" required>
+                </div>
+                <div class="form-group">
+                    <input id="password" name="password" type="password" placeholder="Password" class="textbox" required>
+                </div>
+                <input type="submit" class="btn" value="Sign Up">
+            </form>
+            <p>Already have an account? <a href="login">Sign In</a></p>
+        </div>
+    </div>
+</body>
+</html>
